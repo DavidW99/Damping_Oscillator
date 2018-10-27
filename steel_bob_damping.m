@@ -1,9 +1,10 @@
-
 % Parameters
 g = 9.81;
-b = 0.25*0.05^2;
-l = 0.30;
-m = 0.015;
+d = 0.019;
+c = 0.25*d^2;      %quadratic term
+b = 1.6*10^-4*d;   %linear term
+l = 0.315+d/2;     % measure the length from Tracker
+m = 0.029;
 
 % Boundary Condition
 t_initial  = 0.867;
@@ -15,24 +16,16 @@ dt = 1/30;
 t_span = t_initial:dt:t_final;
 
 M = @(t,theta)[theta(2); ...
-    -sin(theta(1))*g/l-sign(theta(2))*theta(2)^2*b*l/m];
+    -sin(theta(1))*g/l-sign(theta(2))*theta(2)^2*c*l/m-b*theta(2)/m];
 [T,Theta] = ode45(M,t_span,[theta_initial theta_dot_initial]);
 
 % Convert from rad to degree
 Theta_degree = Theta*180/pi;
 
-% Read data from experiment
-filename = 'damping_angle.xlsx';
-experiment = xlsread(filename);
-t_ex = experiment(:,1);
-theta_ex = experiment(:,2);
-
+% Plot simulation
 figure;
-plot(T,Theta_degree(:,1),t_ex,theta_ex,'r:','LineWidth', 2); 
-s=sprintf('Damping Oscillation for Wooden Bob');
+plot(T,Theta_degree(:,1),'LineWidth', 2);
+s=sprintf('Damping Oscillation for Steel Bob');
 title(s);
 xlabel('Time [s]'); ylabel('Amplitude [degree]');
-
-
- 
-
+legend('Simulation')

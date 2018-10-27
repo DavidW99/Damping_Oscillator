@@ -1,3 +1,3 @@
 # Damping_Oscillator
-Numerical Simulation of Damping Simple Gravity Pendulum
+Numerical simulation of damping simple gravity pendulum
 with linear and quadratic air drag
